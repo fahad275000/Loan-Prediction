@@ -1,0 +1,64 @@
+{
+  "Gender": {
+    "classes": [
+      "Female",
+      "Male"
+    ],
+    "mapping": {
+      "Female": 0,
+      "Male": 1
+    }
+  },
+  "Married": {
+    "classes": [
+      "No",
+      "Yes"
+    ],
+    "mapping": {
+      "No": 0,
+      "Yes": 1
+    }
+  },
+  "Education": {
+    "classes": [
+      "Graduate",
+      "Not Graduate"
+    ],
+    "mapping": {
+      "Graduate": 0,
+      "Not Graduate": 1
+    }
+  },
+  "Self_Employed": {
+    "classes": [
+      "No",
+      "Yes"
+    ],
+    "mapping": {
+      "No": 0,
+      "Yes": 1
+    }
+  },
+  "Property_Area": {
+    "classes": [
+      "Rural",
+      "Semiurban",
+      "Urban"
+    ],
+    "mapping": {
+      "Rural": 0,
+      "Semiurban": 1,
+      "Urban": 2
+    }
+  },
+  "Loan_Status": {
+    "classes": [
+      "N",
+      "Y"
+    ],
+    "mapping": {
+      "N": 0,
+      "Y": 1
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "total_records": 614,
+  "total_features": 13,
+  "approved_count": 422,
+  "rejected_count": 192,
+  "approval_rate": 68.73,
+  "missing_values": {
+    "Gender": 13,
+    "Married": 3,
+    "Dependents": 15,
+    "Self_Employed": 32,
+    "LoanAmount": 22,
+    "Loan_Amount_Term": 14,
+    "Credit_History": 50
+  },
+  "avg_applicant_income": 5403.46,
+  "median_applicant_income": 3812.5,
+  "avg_loan_amount": 146.41,
+  "property_area_distribution": {
+    "Semiurban": 233,
+    "Urban": 202,
+    "Rural": 179
+  },
+  "education_distribution": {
+    "Graduate": 480,
+    "Not Graduate": 134
+  },
+  "credit_history_distribution": {
+    "1.0": 475,
+    "0.0": 89
+  }
+}

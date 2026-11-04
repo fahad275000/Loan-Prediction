@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CrediPredict AI — Intelligent Loan Approval Classification Engine</title>
+  <meta name="description" content="Production-ready Machine Learning web application for intelligent loan approval prediction, model analytics, and dataset exploration based on Scikit-Learn.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <!-- Background Glow FX -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <!-- Main Container -->
+  <div class="app-layout">
+    <!-- Navigation Bar -->
+    <header class="navbar">
+      <div class="nav-brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-building-columns"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">CrediPredict <span class="badge-ai">AI</span></span>
+          <span class="brand-subtitle">Loan Approval Machine Learning Engine</span>
+        </div>
+      </div>
+
+      <nav class="nav-tabs" id="navTabs">
+        <button class="nav-tab active" data-tab="evaluator-tab" id="tab-evaluator">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Evaluator</span>
+        </button>
+        <button class="nav-tab" data-tab="models-tab" id="tab-models">
+          <i class="fa-solid fa-microchip"></i> <span>Model Metrics</span>
+        </button>
+        <button class="nav-tab" data-tab="dataset-tab" id="tab-dataset">
+          <i class="fa-solid fa-chart-pie"></i> <span>Dataset Insights</span>
+        </button>
+        <button class="nav-tab" data-tab="api-tab" id="tab-api">
+          <i class="fa-solid fa-code"></i> <span>REST API</span>
+        </button>
+      </nav>
+
+      <div class="nav-status">
+        <div class="status-pill online">
+          <span class="status-dot"></span>
+          <span>Engine Active</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+      <!-- ================= TAB 1: EVALUATOR ================= -->
+      <section class="tab-pane active" id="evaluator-tab">
+        <!-- Preset Personas Quick Bar -->
+        <div class="preset-section">
+          <div class="preset-header">
+            <span class="preset-label"><i class="fa-solid fa-bolt-lightning text-accent"></i> Quick Preset Scenarios:</span>
+            <span class="preset-hint">Click any applicant profile to auto-fill the form instantly</span>
+          </div>
+          <div class="preset-cards">
+            <button class="preset-btn" onclick="applyPreset('prime')">
+              <span class="preset-icon">💼</span>
+              <div class="preset-info">
+                <strong>Prime Professional</strong>
+                <small>$7,500/mo • Good Credit • Graduate</small>
+              </div>
+            </button>
+
+            <button class="preset-btn" onclick="applyPreset('rural_family')">
+              <span class="preset-icon">🏡</span>
+              <div class="preset-info">
+                <strong>Rural Family</strong>
+                <small>$3,800 + $1,600 • 2 Kids • Rural</small>
+              </div>
+            </button>
+
+            <button class="preset-btn" onclick="applyPreset('startup_founder')">
+              <span class="preset-icon">🚀</span>
+              <div class="preset-info">
+                <strong>Self-Employed Entrepreneur</strong>
+                <small>$11,000/mo • Semiurban • $220k</small>
+              </div>
+            </button>
+
+            <button class="preset-btn" onclick="applyPreset('adverse_credit')">
+              <span class="preset-icon">⚠️</span>
+              <div class="preset-info">
+                <strong>Subprime / Credit History 0</strong>
+                <small>$4,000/mo • Delinquent History</small>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div class="evaluator-grid">
+          <!-- Left: Applicant Details Form -->
+          <div class="card glass-card form-card">
+            <div class="card-header">
+              <div class="header-titles">
+                <h3><i class="fa-regular fa-file-lines"></i> Applicant Financial Profile</h3>
+                <p>Provide borrower parameters for real-time automated underwriting</p>
+              </div>
+              <div class="model-picker">
+                <label for="modelSelect">Algorithm:</label>
+                <select id="modelSelect" class="form-select select-pill">
+                  <option value="lr" selected>Logistic Regression (Best F1: 87.8%)</option>
+                  <option value="rfc">Random Forest (F1: 85.4%)</option>
+                </select>
+              </div>
+            </div>
+
+            <form id="loanForm" class="loan-form">
+              <!-- Demographics Row -->
+              <div class="form-row three-col">
+                <div class="form-group">
+                  <label for="gender">Gender</label>
+                  <select id="gender" name="Gender" class="form-select">
+                    <option value="Male" selected>Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="married">Marital Status</label>
+                  <select id="married" name="Married" class="form-select">
+                    <option value="Yes" selected>Married (Yes)</option>
+                    <option value="No">Single (No)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="dependents">Dependents</label>
+                  <select id="dependents" name="Dependents" class="form-select">
+                    <option value="0" selected>0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3+</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Education & Employment -->
+              <div class="form-row two-col">
+                <div class="form-group">
+                  <label for="education">Education Level</label>
+                  <select id="education" name="Education" class="form-select">
+                    <option value="Graduate" selected>Graduate</option>
+                    <option value="Not Graduate">Not Graduate</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="selfEmployed">Self Employed</label>
+                  <select id="selfEmployed" name="Self_Employed" class="form-select">
+                    <option value="No" selected>No (Salaried Employee)</option>
+                    <option value="Yes">Yes (Business / Freelance)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Incomes Row -->
+              <div class="form-row two-col">
+                <div class="form-group">
+                  <div class="label-with-val">
+                    <label for="applicantIncome">Applicant Monthly Income ($)</label>
+                    <span class="live-val text-primary" id="applicantIncomeDisp">$5,849</span>
+                  </div>
+                  <div class="input-with-icon">
+                    <span class="input-prefix">$</span>
+                    <input type="number" id="applicantIncome" name="ApplicantIncome" class="form-input" value="5849" min="150" max="80000" step="50">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="label-with-val">
+                    <label for="coapplicantIncome">Co-applicant Monthly Income ($)</label>
+                    <span class="live-val text-primary" id="coapplicantIncomeDisp">$0</span>
+                  </div>
+                  <div class="input-with-icon">
+                    <span class="input-prefix">$</span>
+                    <input type="number" id="coapplicantIncome" name="CoapplicantIncome" class="form-input" value="0" min="0" max="50000" step="50">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Loan Amount & Term -->
+              <div class="form-row two-col">
+                <div class="form-group">
+                  <div class="label-with-val">
+                    <label for="loanAmount">Requested Loan Amount (in $ Thousands)</label>
+                    <span class="live-val text-accent" id="loanAmountDisp">$128,000</span>
+                  </div>
+                  <div class="input-with-icon">
+                    <span class="input-prefix">k$</span>
+                    <input type="number" id="loanAmount" name="LoanAmount" class="form-input" value="128" min="9" max="700" step="1">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="loanTerm">Loan Term Duration</label>
+                  <select id="loanTerm" name="Loan_Amount_Term" class="form-select">
+                    <option value="12">12 Months (1 Year)</option>
+                    <option value="60">60 Months (5 Years)</option>
+                    <option value="180">180 Months (15 Years)</option>
+                    <option value="240">240 Months (20 Years)</option>
+                    <option value="300">300 Months (25 Years)</option>
+                    <option value="360" selected>360 Months (30 Years)</option>
+                    <option value="480">480 Months (40 Years)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Credit History & Property Area -->
+              <div class="form-row two-col">
+                <div class="form-group">
+                  <label for="creditHistory">Credit Bureau History Guidelines</label>
+                  <select id="creditHistory" name="Credit_History" class="form-select highlight-select">
+                    <option value="1.0" selected>✅ Meets Guidelines / Good Standing (1.0)</option>
+                    <option value="0.0">❌ Does Not Meet Guidelines / Delinquent (0.0)</option>
+                  </select>
+                  <span class="input-subtext"><i class="fa-solid fa-circle-info"></i> Strongest predictor of approval in the dataset</span>
+                </div>
+
+                <div class="form-group">
+                  <label for="propertyArea">Property Geolocation Area</label>
+                  <select id="propertyArea" name="Property_Area" class="form-select">
+                    <option value="Semiurban" selected>Semiurban (Highest statistical approval)</option>
+                    <option value="Urban">Urban</option>
+                    <option value="Rural">Rural</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Computed Financial Quick Stats -->
+              <div class="income-calc-banner">
+                <div class="calc-item">
+                  <span class="calc-label">Total Household Income</span>
+                  <strong class="calc-val" id="combinedIncome">$5,849 / mo</strong>
+                </div>
+                <div class="calc-item">
+                  <span class="calc-label">Est. Monthly Repayment</span>
+                  <strong class="calc-val" id="estPayment">~$356 / mo</strong>
+                </div>
+                <div class="calc-item">
+                  <span class="calc-label">Estimated Debt-to-Income</span>
+                  <strong class="calc-val" id="dtiRatio">6.1%</strong>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-submit" id="btnPredict">
+                  <i class="fa-solid fa-bolt"></i>
+                  <span>Evaluate Loan Eligibility</span>
+                </button>
+                <button type="button" class="btn btn-outline" onclick="resetForm()">
+                  <i class="fa-solid fa-rotate-right"></i> Reset
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Right: Live Decision Center -->
+          <div class="card glass-card decision-card" id="decisionContainer">
+            <div class="card-header">
+              <div class="header-titles">
+                <h3><i class="fa-solid fa-shield-halved"></i> Automated Underwriting Decision</h3>
+                <p>Machine Learning probability scoring & risk factor analysis</p>
+              </div>
+            </div>
+
+            <!-- Initial Idle State -->
+            <div class="decision-idle" id="decisionIdle">
+              <div class="idle-graphic">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+              </div>
+              <h4>Awaiting Applicant Data</h4>
+              <p>Fill out the applicant parameters or select a quick scenario preset above, then click <strong>Evaluate Loan Eligibility</strong> to generate immediate classification and risk scoring.</p>
+              <div class="idle-features">
+                <div class="idle-pill"><i class="fa-solid fa-check text-success"></i> 87.8% F1 Score</div>
+                <div class="idle-pill"><i class="fa-solid fa-check text-success"></i> Instant Probability Vector</div>
+                <div class="idle-pill"><i class="fa-solid fa-check text-success"></i> Underwriting Factor Attribution</div>
+              </div>
+            </div>
+
+            <!-- Active Result State (hidden initially) -->
+            <div class="decision-result d-none" id="decisionResult">
+              <div class="result-hero" id="resultHero">
+                <div class="result-badge-container">
+                  <div class="status-icon-wrapper" id="statusIconWrapper">
+                    <i class="fa-solid fa-check" id="statusIcon"></i>
+                  </div>
+                  <div class="status-texts">
+                    <div class="status-label" id="statusTitle">LOAN APPROVED</div>
+                    <div class="risk-badge" id="riskBadge">Prime Quality Risk</div>
+                  </div>
+                </div>
+                <div class="confidence-box">
+                  <span class="confidence-number" id="confidenceValue">88.5%</span>
+                  <span class="confidence-label">Confidence Score</span>
+                </div>
+              </div>
+
+              <!-- Probability Gauge Bar -->
+              <div class="prob-section">
+                <div class="prob-header">
+                  <span>Approval Likelihood</span>
+                  <strong id="probApprovedText">88.5%</strong>
+                </div>
+                <div class="prob-bar-bg">
+                  <div class="prob-bar-fill" id="probBarFill" style="width: 88.5%;"></div>
+                </div>
+                <div class="prob-labels">
+                  <span class="text-danger"><i class="fa-solid fa-xmark"></i> Rejection Risk: <strong id="probRejectionText">11.5%</strong></span>
+                  <span class="text-success"><i class="fa-solid fa-check"></i> Approval Rate: <strong id="probApprovalText2">88.5%</strong></span>
+                </div>
+              </div>
+
+              <!-- Key Factors Breakdown -->
+              <div class="factors-section">
+                <h4><i class="fa-solid fa-magnifying-glass-chart"></i> Key Underwriting Factors</h4>
+                <div class="factors-list" id="factorsList">
+                  <!-- Dynamically inserted -->
+                </div>
+              </div>
+
+              <!-- Applicant Summary Table -->
+              <div class="underwriting-summary">
+                <div class="summary-chip">
+                  <span>Model Engine</span>
+                  <strong id="modelUsedTag">Logistic Regression</strong>
+                </div>
+                <div class="summary-chip">
+                  <span>Requested Amount</span>
+                  <strong id="summaryLoanAmt">$128,000</strong>
+                </div>
+                <div class="summary-chip">
+                  <span>Household Income</span>
+                  <strong id="summaryTotalInc">$5,849 / mo</strong>
+                </div>
+                <div class="summary-chip">
+                  <span>Tenure</span>
+                  <strong id="summaryTerm">360 Months</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 2: MODEL METRICS ================= -->
+      <section class="tab-pane" id="models-tab">
+        <div class="tab-header-banner">
+          <div>
+            <h2><i class="fa-solid fa-microchip"></i> Machine Learning Architecture & Benchmarks</h2>
+            <p>Evaluation metrics, confusion matrices, and predictive feature importances trained on historical home loan applicants.</p>
+          </div>
+          <button class="btn btn-primary" id="btnRetrain" onclick="retrainModels()">
+            <i class="fa-solid fa-arrows-rotate"></i> Retrain Models Live
+          </button>
+        </div>
+
+        <!-- Models Metric Cards Grid -->
+        <div class="metric-comparison-grid">
+          <!-- Card 1: Logistic Regression -->
+          <div class="card glass-card model-stat-card">
+            <div class="model-stat-header">
+              <div class="stat-badge lr-badge">Model 1</div>
+              <h3>Logistic Regression</h3>
+              <p>Linear probabilistic decision boundary (Notebook Baseline)</p>
+            </div>
+            <div class="score-grid">
+              <div class="score-box">
+                <span class="score-num" id="lrAccuracy">80.49%</span>
+                <span class="score-lbl">Accuracy</span>
+              </div>
+              <div class="score-box highlight">
+                <span class="score-num" id="lrF1">0.8776</span>
+                <span class="score-lbl">F1 Score (Top)</span>
+              </div>
+              <div class="score-box">
+                <span class="score-num" id="lrPrecision">0.7818</span>
+                <span class="score-lbl">Precision</span>
+              </div>
+              <div class="score-box">
+                <span class="score-num" id="lrRecall">1.0000</span>
+                <span class="score-lbl">Recall</span>
+              </div>
+            </div>
+
+            <!-- Confusion Matrix Display -->
+            <div class="matrix-container">
+              <h4>Confusion Matrix (Test Set: 123 Samples)</h4>
+              <div class="matrix-grid">
+                <div class="matrix-cell tn">
+                  <span class="matrix-num" id="lrTN">13</span>
+                  <span class="matrix-tag">True Negatives</span>
+                </div>
+                <div class="matrix-cell fp">
+                  <span class="matrix-num" id="lrFP">24</span>
+                  <span class="matrix-tag">False Positives</span>
+                </div>
+                <div class="matrix-cell fn">
+                  <span class="matrix-num" id="lrFN">0</span>
+                  <span class="matrix-tag">False Negatives</span>
+                </div>
+                <div class="matrix-cell tp">
+                  <span class="matrix-num" id="lrTP">86</span>
+                  <span class="matrix-tag">True Positives</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Random Forest -->
+          <div class="card glass-card model-stat-card">
+            <div class="model-stat-header">
+              <div class="stat-badge rfc-badge">Model 2</div>
+              <h3>Random Forest Classifier</h3>
+              <p>Ensemble of 100 non-linear decision trees with bagging</p>
+            </div>
+            <div class="score-grid">
+              <div class="score-box">
+                <span class="score-num" id="rfcAccuracy">78.05%</span>
+                <span class="score-lbl">Accuracy</span>
+              </div>
+              <div class="score-box highlight">
+                <span class="score-num" id="rfcF1">0.8541</span>
+                <span class="score-lbl">F1 Score</span>
+              </div>
+              <div class="score-box">
+                <span class="score-num" id="rfcPrecision">0.8037</span>
+                <span class="score-lbl">Precision</span>
+              </div>
+              <div class="score-box">
+                <span class="score-num" id="rfcRecall">0.9186</span>
+                <span class="score-lbl">Recall</span>
+              </div>
+            </div>
+
+            <!-- Confusion Matrix Display -->
+            <div class="matrix-container">
+              <h4>Confusion Matrix (Test Set: 123 Samples)</h4>
+              <div class="matrix-grid">
+                <div class="matrix-cell tn">
+                  <span class="matrix-num" id="rfcTN">18</span>
+                  <span class="matrix-tag">True Negatives</span>
+                </div>
+                <div class="matrix-cell fp">
+                  <span class="matrix-num" id="rfcFP">19</span>
+                  <span class="matrix-tag">False Positives</span>
+                </div>
+                <div class="matrix-cell fn">
+                  <span class="matrix-num" id="rfcFN">8</span>
+                  <span class="matrix-tag">False Negatives</span>
+                </div>
+                <div class="matrix-cell tp">
+                  <span class="matrix-num" id="rfcTP">78</span>
+                  <span class="matrix-tag">True Positives</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature Importance Chart Card -->
+        <div class="card glass-card chart-card mt-4">
+          <div class="card-header">
+            <div class="header-titles">
+              <h3><i class="fa-solid fa-chart-bar"></i> Feature Importance Attribution (Random Forest Gini Index)</h3>
+              <p>Relative predictive weight assigned to each applicant variable in determining loan approvals</p>
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="featureImportanceChart" height="90"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 3: DATASET INSIGHTS ================= -->
+      <section class="tab-pane" id="dataset-tab">
+        <div class="tab-header-banner">
+          <div>
+            <h2><i class="fa-solid fa-database"></i> Training Dataset Analytics & Records</h2>
+            <p>Historical loan records from <code>train.csv</code> used to train and validate our predictive pipelines.</p>
+          </div>
+        </div>
+
+        <!-- KPI Summary Cards -->
+        <div class="kpi-grid">
+          <div class="card glass-card kpi-card">
+            <div class="kpi-icon text-primary"><i class="fa-solid fa-users"></i></div>
+            <div class="kpi-details">
+              <span class="kpi-val" id="kpiTotal">614</span>
+              <span class="kpi-lbl">Total Applications</span>
+            </div>
+          </div>
+
+          <div class="card glass-card kpi-card">
+            <div class="kpi-icon text-success"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="kpi-details">
+              <span class="kpi-val" id="kpiApprovalRate">68.7%</span>
+              <span class="kpi-lbl">Historical Approval Rate</span>
+            </div>
+          </div>
+
+          <div class="card glass-card kpi-card">
+            <div class="kpi-icon text-accent"><i class="fa-solid fa-wallet"></i></div>
+            <div class="kpi-details">
+              <span class="kpi-val" id="kpiAvgIncome">$5,403</span>
+              <span class="kpi-lbl">Mean Applicant Income</span>
+            </div>
+          </div>
+
+          <div class="card glass-card kpi-card">
+            <div class="kpi-icon text-warning"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+            <div class="kpi-details">
+              <span class="kpi-val" id="kpiAvgLoan">$146.4k</span>
+              <span class="kpi-lbl">Mean Loan Amount</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Distribution Charts Grid -->
+        <div class="charts-two-col">
+          <div class="card glass-card chart-card">
+            <h4><i class="fa-solid fa-pie-chart"></i> Target Distribution (Loan Status)</h4>
+            <div class="chart-wrapper">
+              <canvas id="targetDoughnutChart"></canvas>
+            </div>
+          </div>
+
+          <div class="card glass-card chart-card">
+            <h4><i class="fa-solid fa-map-location-dot"></i> Approvals by Property Area</h4>
+            <div class="chart-wrapper">
+              <canvas id="propertyAreaChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Data Table Card -->
+        <div class="card glass-card mt-4 table-card">
+          <div class="card-header table-header-flex">
+            <div>
+              <h3><i class="fa-solid fa-table-list"></i> Raw Applicant Records Browser</h3>
+              <p>Explore real records from <code>train.csv</code> with status filters & search</p>
+            </div>
+            <div class="table-controls">
+              <input type="text" id="tableSearch" class="form-input search-input" placeholder="Search Loan ID, Area...">
+              <select id="tableStatusFilter" class="form-select status-select">
+                <option value="all">All Decisions</option>
+                <option value="Y">Approved Only (Y)</option>
+                <option value="N">Rejected Only (N)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Loan ID</th>
+                  <th>Gender</th>
+                  <th>Married</th>
+                  <th>Dependents</th>
+                  <th>Education</th>
+                  <th>Income ($)</th>
+                  <th>Co-Income ($)</th>
+                  <th>Loan ($k)</th>
+                  <th>Term</th>
+                  <th>Credit</th>
+                  <th>Property</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="datasetTableBody">
+                <tr><td colspan="12" class="text-center py-4">Loading dataset records...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div class="pagination-footer">
+            <span class="pagination-info" id="paginationInfo">Showing 1 to 15 of 614 records</span>
+            <div class="pagination-btns">
+              <button class="btn btn-outline btn-sm" id="btnPrevPage" onclick="changePage(-1)"><i class="fa-solid fa-chevron-left"></i> Previous</button>
+              <span class="page-indicator" id="pageIndicator">Page 1 of 41</span>
+              <button class="btn btn-outline btn-sm" id="btnNextPage" onclick="changePage(1)">Next <i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 4: REST API ================= -->
+      <section class="tab-pane" id="api-tab">
+        <div class="tab-header-banner">
+          <div>
+            <h2><i class="fa-solid fa-code"></i> Direct Integration REST API</h2>
+            <p>Integrate our trained ML scoring engine directly into your banking applications and loan origination software.</p>
+          </div>
+        </div>
+
+        <div class="api-docs-grid">
+          <div class="card glass-card">
+            <div class="api-endpoint-badge">
+              <span class="method-post">POST</span>
+              <code>/api/predict</code>
+            </div>
+            <p class="mt-2 text-muted">Pass applicant payload as JSON to receive instant binary approval classification and probability confidence.</p>
+
+            <h4 class="mt-4"><i class="fa-solid fa-terminal"></i> Sample cURL Request</h4>
+            <div class="code-block">
+              <pre><code>curl -X POST http://localhost:5050/api/predict \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model_type": "lr",
+    "Gender": "Male",
+    "Married": "Yes",
+    "Dependents": "0",
+    "Education": "Graduate",
+    "Self_Employed": "No",
+    "ApplicantIncome": 5849,
+    "CoapplicantIncome": 0,
+    "LoanAmount": 128,
+    "Loan_Amount_Term": 360,
+    "Credit_History": 1.0,
+    "Property_Area": "Semiurban"
+  }'</code></pre>
+            </div>
+          </div>
+
+          <div class="card glass-card">
+            <h4><i class="fa-solid fa-reply"></i> Example API Response Payload</h4>
+            <div class="code-block">
+              <pre><code>{
+  "success": true,
+  "prediction": "Approved",
+  "loan_status": "Y",
+  "confidence": 88.5,
+  "prob_approved": 88.5,
+  "prob_rejected": 11.5,
+  "risk_level": "Low",
+  "risk_badge": "Prime Quality",
+  "model_used": "Logistic Regression",
+  "key_factors": [
+    {
+      "factor": "Credit History",
+      "impact": "Positive",
+      "description": "Excellent credit track record meets guidelines."
+    }
+  ]
+}</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-left">
+        <span>© 2026 CrediPredict AI Engine</span> • 
+        <span>Trained on Kaggle Loan Prediction Dataset</span>
+      </div>
+      <div class="footer-right">
+        <span>Powered by Python 3.12 • Scikit-Learn 1.9 • Flask 3.1</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification" id="toast"></div>
+
+  <!-- Main JavaScript Logic -->
+  <script src="/static/js/main.js"></script>
+</body>
+</html>

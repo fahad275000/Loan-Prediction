@@ -1,0 +1,54 @@
+{
+  "logistic_regression": {
+    "accuracy": 80.49,
+    "f1_score": 0.8776,
+    "precision": 0.7818,
+    "recall": 1.0,
+    "confusion_matrix": {
+      "tn": 13,
+      "fp": 24,
+      "fn": 0,
+      "tp": 86
+    }
+  },
+  "random_forest": {
+    "accuracy": 78.05,
+    "f1_score": 0.8541,
+    "precision": 0.798,
+    "recall": 0.9186,
+    "confusion_matrix": {
+      "tn": 17,
+      "fp": 20,
+      "fn": 7,
+      "tp": 79
+    }
+  },
+  "feature_importances": {
+    "Credit_History": 0.2637,
+    "ApplicantIncome": 0.209,
+    "LoanAmount": 0.1777,
+    "CoapplicantIncome": 0.1234,
+    "Dependents": 0.0478,
+    "Property_Area": 0.0475,
+    "Loan_Amount_Term": 0.0462,
+    "Married": 0.0264,
+    "Education": 0.0219,
+    "Self_Employed": 0.0186,
+    "Gender": 0.0177
+  },
+  "feature_names": [
+    "Gender",
+    "Married",
+    "Dependents",
+    "Education",
+    "Self_Employed",
+    "ApplicantIncome",
+    "CoapplicantIncome",
+    "LoanAmount",
+    "Loan_Amount_Term",
+    "Credit_History",
+    "Property_Area"
+  ],
+  "test_set_size": 123,
+  "train_set_size": 491
+}
